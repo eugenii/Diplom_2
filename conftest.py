@@ -1,26 +1,47 @@
 import pytest
+import allure
+from methods.user_methods import UserMethods
+from data import TestUser
 
-# @pytest.fixture
-# def courier_fixture():
-#     """Фикстура создаёт курьера и возвращает его данные, затем удаляет после завершения теста."""
-#     # Генерируем данные для курьера
-#     login, password, firstname = register_new_courier_and_return_login_password()
-#     courier_methods = CourierMethods()
+@pytest.fixture
+def registered_user():
+    """Фикстура создаёт пользователя и возвращает его данные, затем удаляет после завершения теста."""
+    user_methods = UserMethods()
+    
+    # Генерируем данные для пользователя
+    email = TestUser.generate_unique_email()
+    password = TestUser.VALID_PASSWORD
+    name = TestUser.VALID_NAME
+    
+    # Регистрируем пользователя
+    response = user_methods.create_user(email, password, name)
+    
+    if response.status_code != 200:
+        pytest.fail(f"Не удалось создать пользователя. Ответ сервера: {response.status_code} - {response.text}")
+    
+    response_data = response.json()
+    auth_token = response_data['accessToken']
+    
+    yield email, password, name, auth_token
+    
+    # Здесь можно добавить удаление пользователя, если API поддерживает эту функцию
+    # В текущем API нет эндпоинта для удаления пользователя, поэтому просто завершаем
+    print(f"Тестовый пользователь {email} завершил работу")
 
-#     # Отправляем запрос на создание курьера
-#     response = courier_methods.create_courier(login, password, firstname)
-#     # if response[0] != 201:  # Если курьер не создан
-#     #     pytest.fail(f"Не удалось создать курьера. Ответ сервера: {response[1]}")
-
-#     yield login, password, firstname, response
-
-#     # Удаляем курьера после завершения теста
-#     try:
-#         courier_id = courier_methods.get_courier_id(login, password)
-#         if courier_id:
-#             # print(f"Удаляем курьера с ID={courier_id}")
-#             courier_methods.delete_courier(courier_id)
-#         else:
-#             print("Курьер не найден для удаления.")
-#     except Exception as e:
-#         print(f"Ошибка при удалении курьера: {e}")
+@pytest.fixture
+def auth_token():
+    """Фикстура возвращает токен авторизации для зарегистрированного пользователя."""
+    user_methods = UserMethods()
+    
+    email = TestUser.generate_unique_email()
+    password = TestUser.VALID_PASSWORD
+    name = TestUser.VALID_NAME
+    
+    # Регистрируем пользователя
+    response = user_methods.create_user(email, password, name)
+    
+    if response.status_code != 200:
+        pytest.fail(f"Не удалось создать пользователя. Ответ сервера: {response.status_code}")
+    
+    response_data = response.json()
+    return response_data['accessToken']

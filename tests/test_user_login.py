@@ -1,7 +1,9 @@
 import allure
 import pytest
+
 from methods.user_methods import UserMethods
 from data import TestUser
+
 
 class TestUserLogin:
     

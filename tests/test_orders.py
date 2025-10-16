@@ -1,8 +1,10 @@
 import allure
 import pytest
+
 from methods.user_methods import UserMethods
 from methods.order_methods import OrderMethods
 from data import TestUser, TestOrder
+
 
 class TestOrders:
     

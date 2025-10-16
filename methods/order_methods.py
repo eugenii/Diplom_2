@@ -1,9 +1,10 @@
 import allure
 import requests
+
 from data import ORDERS_URL, INGREDIENTS_URL
 
+
 class OrderMethods:
-    
     @allure.step('Создание заказа')
     def create_order(self, ingredients, auth_token=None):
         """Создание заказа."""
