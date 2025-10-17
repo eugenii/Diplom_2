@@ -1,0 +1,2 @@
+Missing name response status: 403
+Missing name response text: {"success":false,"message":"Email, password and name are required fields"}

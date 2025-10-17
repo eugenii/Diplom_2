@@ -1,0 +1,2 @@
+Response status: 200
+Response text: {"success":true,"user":{"email":"test_1759679070718_d97mt1@yandex.ru","name":"Test User"},"accessToken":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTI5MjVmODJkN2VkMDAxYzUyMWFkYSIsImlhdCI6MTc1OTY3OTA3MSwiZXhwIjoxNzU5NjgwMjcxfQ.6-tmEPgoZqBeMAE62Tuyo3AAfpTK1_DmJZ7re8W20Oo","refreshToken":"9dbaeedca907d705a666310aea6c02b740fbbb0fa135c0f9eed9c352232d2ecb5a1d933608f2d21b"}
