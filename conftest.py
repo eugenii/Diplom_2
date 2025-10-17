@@ -1,5 +1,6 @@
 import pytest
 import allure
+
 from methods.user_methods import UserMethods
 from data import TestUser
 
@@ -44,4 +45,12 @@ def auth_token():
         pytest.fail(f"Не удалось создать пользователя. Ответ сервера: {response.status_code}")
     
     response_data = response.json()
-    return response_data['accessToken']
+    token = response_data['accessToken']
+    
+    yield token
+
+    delete_response = user_methods.delete_user(token)
+    if delete_response and delete_response.status_code == 200:
+        print(f"Тестовый пользователь {email} успешно удалён")
+    else:
+        print(f"Не удалось удалить тестового пользователя {email}")

@@ -38,6 +38,11 @@ class TestUserRegistration:
         assert response_data['user']['email'] == unique_email
         assert response_data['user']['name'] == TestUser.VALID_NAME
 
+        # Сохраняем данные пользователя для последующего удаления
+        auth_token = response_data['accessToken']
+        self.created_users.append((unique_email, auth_token))
+
+
     @allure.title('Регистрация уже существующего пользователя')
     def test_create_duplicate_user(self):
         """Тест регистрации пользователя, который уже существует."""
@@ -60,6 +65,11 @@ class TestUserRegistration:
             pytest.skip(f"Не удалось создать первого пользователя: {first_response.status_code}")
         
         assert first_response.status_code == 200
+
+        # Сохраняем данные первого пользователя для удаления
+        first_response_data = first_response.json()
+        auth_token = first_response_data['accessToken']
+        self.created_users.append((unique_email, auth_token))
         
         # Пытаемся создать такого же пользователя
         duplicate_response = self.user_methods.create_user(

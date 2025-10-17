@@ -63,3 +63,15 @@ class UserMethods:
             print(f"Ошибка при запросе: {e}")
             return None
     
+    @allure.step('Удаление пользователя')
+    def delete_user(self, auth_token):
+        """Удаление пользователя."""
+        headers = {'Authorization': auth_token}
+        
+        try:
+            # Если API поддерживает удаление пользователя
+            response = requests.delete(USER_URL, headers=headers)
+            return response
+        except requests.exceptions.RequestException as e:
+            print(f"Ошибка при удалении пользователя: {e}")
+            return None
